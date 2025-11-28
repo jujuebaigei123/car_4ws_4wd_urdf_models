@@ -11,5 +11,6 @@ gazebo使用的是添加控制器后的urdf文件，名称为`car_4ws_4wd_gazebo
 1. 将spawn_robot复制到创建的src目录下
 2. 在工作空间根目录下编译并source工作空间
 3. 运行launch：`roslaunch spawn_robot spawn_robot.launch`
-
+### todo
+加入雷达
 
