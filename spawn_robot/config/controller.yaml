@@ -1,0 +1,64 @@
+car_4ws_4wd:
+  # 1. 发布关节状态 (Joint State Controller)
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+  # 2. 转向控制器 (位置控制 Position Control)
+  fl_steer_controller:
+    type: effort_controllers/JointPositionController
+    joint: fl_steer_joint
+    pid: {p: 1000.0, i: 0.1, d: 10.0}
+
+  fr_steer_controller:
+    type: effort_controllers/JointPositionController
+    joint: fr_steer_joint
+    pid: {p: 1000.0, i: 0.1, d: 10.0}
+
+  rl_steer_controller:
+    type: effort_controllers/JointPositionController
+    joint: rl_steer_joint
+    pid: {p: 1000.0, i: 0.1, d: 10.0}
+
+  rr_steer_controller:
+    type: effort_controllers/JointPositionController
+    joint: rr_steer_joint
+    pid: {p: 1000.0, i: 0.1, d: 10.0} 
+
+  # 3. 驱动控制器 (速度控制 Velocity Control)
+  fl_drive_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: fl_drive_joint
+    pid: {p: 10.0, i: 0.0, d: 0.0}
+
+  fr_drive_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: fr_drive_joint
+    pid: {p: 10.0, i: 0.0, d: 0.0}
+
+  rl_drive_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: rl_drive_joint
+    pid: {p: 10.0, i: 0.0, d: 0.0}
+
+  rr_drive_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: rr_drive_joint
+    pid: {p: 10.0, i: 0.0, d: 0.0}
+
+# 新增: Gazebo 仿真所需的 PID 增益
+# 命名空间必须是 gazebo_ros_control
+# ==============================================================
+# gazebo_ros_control:
+#   pid_gains:
+#     # 转向关节 (Position control - 需要相对高的增益)
+#     fl_steer_joint: {p: 10000.0, i: 10.0, d: 100.0}
+#     fr_steer_joint: {p: 10000.0, i: 10.0, d: 100.0}
+#     rl_steer_joint: {p: 10000.0, i: 10.0, d: 100.0}
+#     rr_steer_joint: {p: 10000.0, i: 10.0, d: 100.0}
+
+#     # 驱动关节 (Velocity control - 需要较低增益)
+#     fl_drive_joint: {p: 100.0, i: 0.01, d: 1.0}
+#     fr_drive_joint: {p: 100.0, i: 0.01, d: 1.0}
+#     rl_drive_joint: {p: 100.0, i: 0.01, d: 1.0}
+#     rr_drive_joint: {p: 100.0, i: 0.01, d: 1.0}
