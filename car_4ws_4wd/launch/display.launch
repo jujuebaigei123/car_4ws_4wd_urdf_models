@@ -16,5 +16,5 @@
     name="rviz"
     pkg="rviz"
     type="rviz"
-    args="-d $(find car_4ws_4wd)/config/myrviz.rviz" />
+    args="-d $(find car_4ws_4wd)/urdf.rviz" />
 </launch>
