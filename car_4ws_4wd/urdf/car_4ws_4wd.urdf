@@ -95,7 +95,7 @@
     <child
       link="fl_steer_link" />
     <axis
-      xyz="0 0 -1" />
+      xyz="0 0 1" />
     <limit
       lower="-0.55"
       upper="0.55"
@@ -153,7 +153,7 @@
     <child
       link="fl_drive_link" />
     <axis
-      xyz="0 0 1" />
+      xyz="0 0 -1" />
   </joint>
   <link
     name="fr_steer_link">
@@ -206,7 +206,7 @@
     <child
       link="fr_steer_link" />
     <axis
-      xyz="0 0 -1" />
+      xyz="0 0 1" />
     <limit
       lower="-0.55"
       upper="0.55"
@@ -264,7 +264,7 @@
     <child
       link="fr_drive_link" />
     <axis
-      xyz="0 0 1" />
+      xyz="0 0 -1" />
   </joint>
   <link
     name="rl_steer_link">
@@ -317,7 +317,7 @@
     <child
       link="rl_steer_link" />
     <axis
-      xyz="0 0 -1" />
+      xyz="0 0 1" />
     <limit
       lower="-0.55"
       upper="0.55"
@@ -375,7 +375,7 @@
     <child
       link="rl_drive_link" />
     <axis
-      xyz="0 0 1" />
+      xyz="0 0 -1" />
   </joint>
   <link
     name="rr_steer_link">
@@ -428,7 +428,7 @@
     <child
       link="rr_steer_link" />
     <axis
-      xyz="0 0 -1" />
+      xyz="0 0 1" />
     <limit
       lower="-0.55"
       upper="0.55"
@@ -486,7 +486,7 @@
     <child
       link="rr_drive_link" />
     <axis
-      xyz="0 0 1" />
+      xyz="0 0 -1" />
   </joint>
   <link
     name="lidar_link">
