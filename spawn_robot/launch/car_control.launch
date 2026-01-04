@@ -1,0 +1,12 @@
+<launch>
+	<arg name="robot_name"/>
+
+	<!-- 加载 ros-control 和控制器 -->
+	<rosparam file="$(find spawn_robot)/config/four_wheel_steering_controller.yaml" command="load"/>
+	<node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen" args="joint_state_controller  four_wheel_steering_controller"/>
+
+	<!-- robot_state_publisher -->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+		<param name="tf_prefix" value="$(arg robot_name)"/>
+	</node>
+</launch>

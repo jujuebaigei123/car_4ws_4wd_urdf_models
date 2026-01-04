@@ -2,8 +2,8 @@
 <!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
      Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
-<robot
-  name="car_4ws_4wd">
+<robot name="car_4ws_4wd">
+
   <!-- dummy link -->
   <link name="base"/>
   <joint name="base_joint" type="fixed">
@@ -11,6 +11,8 @@
     <child link="base_link"/>
     <origin xyz="0 0 0.3" rpy="0 0 0"/>
   </joint>
+
+  <!-- 车身上盖 -->
   <link
     name="base_link">
     <inertial>
@@ -51,6 +53,8 @@
       </geometry>
     </collision>
   </link>
+
+  <!-- 左前转向轮 -->
   <link
     name="fl_steer_link">
     <inertial>
@@ -109,6 +113,8 @@
       effort="100"
       velocity="1" />
   </joint>
+
+  <!-- 左前驱动轮 -->
   <link
     name="fl_drive_link">
     <inertial>
@@ -143,13 +149,9 @@
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
-      <!-- <geometry>
+      <geometry>
         <mesh
           filename="package://car_4ws_4wd/meshes/fl_drive_link.STL" />
-      </geometry> -->
-      <!-- 简化碰撞 -->
-      <geometry>
-        <cylinder radius="0.13" length="0.05"/> 
       </geometry>
     </collision>
   </link>
@@ -175,6 +177,8 @@
     <maxVel>5.0</maxVel>
     <material>Gazebo/Black</material>
   </gazebo>
+
+  <!-- 右前转向轮 -->
   <link
     name="fr_steer_link">
     <inertial>
@@ -233,6 +237,8 @@
       effort="100"
       velocity="1" />
   </joint>
+
+  <!-- 右前驱动轮 -->
   <link
     name="fr_drive_link">
     <inertial>
@@ -267,13 +273,9 @@
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
-      <!-- <geometry>
+      <geometry>
         <mesh
           filename="package://car_4ws_4wd/meshes/fr_drive_link.STL" />
-      </geometry> -->
-      <!-- 简化碰撞 -->
-      <geometry>
-        <cylinder radius="0.13" length="0.05"/> 
       </geometry>
     </collision>
   </link>
@@ -299,6 +301,8 @@
     <maxVel>5.0</maxVel>
     <material>Gazebo/Black</material>
   </gazebo>
+
+  <!-- 左后转向轮 -->
   <link
     name="rl_steer_link">
     <inertial>
@@ -357,6 +361,8 @@
       effort="100"
       velocity="1" />
   </joint>
+
+  <!-- 左后驱动轮 -->
   <link
     name="rl_drive_link">
     <inertial>
@@ -391,13 +397,9 @@
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
-      <!-- <geometry>
+      <geometry>
         <mesh
           filename="package://car_4ws_4wd/meshes/rl_drive_link.STL" />
-      </geometry> -->
-      <!-- 简化碰撞 -->
-      <geometry>
-        <cylinder radius="0.13" length="0.05"/> 
       </geometry>
     </collision>
   </link>
@@ -423,6 +425,8 @@
     <maxVel>5.0</maxVel>
     <material>Gazebo/Black</material>
   </gazebo>
+
+  <!-- 右后转向轮 -->
   <link
     name="rr_steer_link">
     <inertial>
@@ -481,6 +485,8 @@
       effort="100"
       velocity="1" />
   </joint>
+
+  <!-- 右后驱动轮 -->
   <link
     name="rr_drive_link">
     <inertial>
@@ -515,13 +521,9 @@
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
-      <!-- <geometry>
+      <geometry>
         <mesh
           filename="package://car_4ws_4wd/meshes/rr_drive_link.STL" />
-      </geometry> -->
-      <!-- 简化碰撞 -->
-      <geometry>
-        <cylinder radius="0.13" length="0.05"/> 
       </geometry>
     </collision>
   </link>
@@ -547,6 +549,8 @@
     <maxVel>5.0</maxVel>
     <material>Gazebo/Black</material>
   </gazebo>
+
+  <!-- 雷达 -->
   <link
     name="lidar_link">
     <inertial>
@@ -600,47 +604,57 @@
     <axis
       xyz="0 0 0" />
   </joint>
-  <!-- 添加传动装置 -->
+  <gazebo reference="lidar_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <!-- ==================== transmission ==================== -->
+  <!-- 转向 -->
   <transmission name="fl_steer_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="fl_steer_joint">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="fl_steer_motor">
       <mechanicalReduction>1</mechanicalReduction>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </actuator>
   </transmission>
 
   <transmission name="fr_steer_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="fr_steer_joint">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="fr_steer_motor">
       <mechanicalReduction>1</mechanicalReduction>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </actuator>
   </transmission>
 
   <transmission name="rl_steer_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="rl_steer_joint">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="rl_steer_motor">
       <mechanicalReduction>1</mechanicalReduction>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </actuator>
   </transmission>
 
   <transmission name="rr_steer_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="rr_steer_joint">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="rr_steer_motor">
       <mechanicalReduction>1</mechanicalReduction>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </actuator>
   </transmission>
 
+  <!-- 驱动 -->
   <transmission name="fl_drive_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="fl_drive_joint">
@@ -648,6 +662,7 @@
     </joint>
     <actuator name="fl_drive_motor">
       <mechanicalReduction>1</mechanicalReduction>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
     </actuator>
   </transmission>
 
@@ -658,6 +673,7 @@
     </joint>
     <actuator name="fr_drive_motor">
       <mechanicalReduction>1</mechanicalReduction>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
     </actuator>
   </transmission>
 
@@ -668,6 +684,7 @@
     </joint>
     <actuator name="rl_drive_motor">
       <mechanicalReduction>1</mechanicalReduction>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
     </actuator>
   </transmission>
 
@@ -678,14 +695,16 @@
     </joint>
     <actuator name="rr_drive_motor">
       <mechanicalReduction>1</mechanicalReduction>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
     </actuator>
   </transmission>
-  <!-- 添加 Gazebo ROS Control 插件 -->
+
+  <!-- ==================== Gazebo 插件 ==================== -->
+  <!-- 控制插件 -->
   <gazebo>
-    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-      <robotNamespace>/car_4ws_4wd</robotNamespace>
-    </plugin>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"/>
   </gazebo>
+  <!-- 雷达仿真插件 -->
   <gazebo reference="lidar_link">
     <sensor type="ray" name="lidar_sensor">
       <update_rate>10.0</update_rate>
@@ -705,7 +724,7 @@
       </ray>
 
       <plugin name="gazebo_ros_lidar_controller" filename="libgazebo_ros_laser.so">
-        <topicName>/car_4ws_4wd/scan</topicName>
+        <topicName>/scan</topicName>
         <frameName>lidar_link</frameName>
       </plugin>
     </sensor>

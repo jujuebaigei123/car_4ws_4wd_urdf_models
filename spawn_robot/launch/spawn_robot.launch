@@ -1,30 +1,12 @@
 <launch>
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="paused" value="false"/>
-    <arg name="use_sim_time" value="true"/>
-    <arg name="gui" value="true"/>
-    <arg name="headless" value="false"/>
-    <arg name="debug" value="false"/>
-  </include>
-
-  <param name="robot_description" textfile="$(find car_4ws_4wd)/urdf/car_4ws_4wd_gazebo.urdf" />
-
-  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-        args="-urdf -model car_4ws_4wd -param robot_description -z 0.5"/>
-
-  <rosparam file="$(find spawn_robot)/config/controller.yaml" command="load"/>
-
-  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-        output="screen" ns="/car_4ws_4wd" 
-        args="joint_state_controller 
-              fl_steer_controller fr_steer_controller rl_steer_controller rr_steer_controller
-              fl_drive_controller fr_drive_controller rl_drive_controller rr_drive_controller"/>
-
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
-        respawn="false" output="screen">
-    <remap from="/joint_states" to="/car_4ws_4wd/joint_states" />
-  </node>
+  	<arg name="x" default="0.0"/>
+	<arg name="y" default="0.0"/>
+	<arg name="yaw" default="0.0"/>
+	<arg name="robot_name" default="car"/>
   
-  <node name="car_control_node" pkg="spawn_robot" type="car_control_node.py" output="screen"/>
+	<param name="robot_description" command="$(find xacro)/xacro '$(find car_4ws_4wd)/urdf/car_4ws_4wd.urdf.xacro' robot_name:='$(arg robot_name)'" />
+
+	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+		args="-urdf -x $(arg x) -y $(arg y) -Y $(arg yaw) -model $(arg robot_name) -param /$(arg robot_name)/robot_description "/>
 
 </launch>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="$(arg robot_name)" xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:property name="PI" value="3.1415926535897931"/>
+  <xacro:property name="mesh_path" value="package://car_4ws_4wd/meshes"/>
+  
+  <xacro:property name="wheel_offset_x" value="0.32" /> <xacro:property name="wheel_offset_y" value="0.235" /> <xacro:property name="steer_limit" value="0.55" />
+  
+  <link name="base"/>
+  <joint name="base_joint" type="fixed">
+    <parent link="base"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.3" rpy="0 0 0"/>
+  </joint>
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="-0.00117586528514695 -4.30552833609457E-17 0.174335815287564" rpy="0 0 0" />
+      <mass value="40.2533565247656" />
+      <inertia ixx="1.311634309655" ixy="1.64735322115376E-16" ixz="0.0137789561118299"
+               iyy="3.43401128074704" iyz="-1.3755764102141E-16" izz="3.79965514788602" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="${mesh_path}/base_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.392156862745098 0.384313725490196 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="${mesh_path}/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <xacro:macro name="wheel_assembly" params="prefix x_pos y_pos">
+    
+    <link name="${prefix}_steer_link">
+      <inertial>
+        <origin xyz="5.5511E-17 0 -0.088728" rpy="0 0 0" />
+        <mass value="10" />
+        <inertia ixx="0.047904" ixy="0" ixz="0" iyy="0.037562" iyz="0" izz="0.014192" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="${mesh_path}/${prefix}_steer_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="1 0.96078 0.90588 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="${mesh_path}/${prefix}_steer_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}_steer_joint" type="revolute">
+      <origin xyz="${x_pos} ${y_pos} -0.01" rpy="0 0 0" />
+      <parent link="base_link" />
+      <child link="${prefix}_steer_link" />
+      <axis xyz="0 0 1" />
+      <limit lower="-${steer_limit}" upper="${steer_limit}" effort="100" velocity="1" />
+    </joint>
+
+    <link name="${prefix}_drive_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="2.1666" />
+        <inertia ixx="0.010578" ixy="0" ixz="0" iyy="0.010578" iyz="0" izz="0.020276" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="${mesh_path}/${prefix}_drive_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0 0 0 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="${mesh_path}/${prefix}_drive_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}_drive_joint" type="continuous">
+      <origin xyz="0 0 -0.16" rpy="${PI/2} 0 0" />
+      <parent link="${prefix}_steer_link" />
+      <child link="${prefix}_drive_link" />
+      <axis xyz="0 0 -1" />
+    </joint>
+
+    <gazebo reference="${prefix}_drive_link">
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+      <kp>100000.0</kp>
+      <kd>10000.0</kd>
+      <minDepth>0.001</minDepth>
+      <maxVel>5.0</maxVel>
+      <material>Gazebo/Black</material>
+    </gazebo>
+
+    <transmission name="${prefix}_steer_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}_steer_joint">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}_steer_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </actuator>
+    </transmission>
+
+    <transmission name="${prefix}_drive_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}_drive_joint">
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}_drive_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      </actuator>
+    </transmission>
+  </xacro:macro>
+
+  <xacro:wheel_assembly prefix="fl" x_pos="${wheel_offset_x}"  y_pos="${wheel_offset_y}" />
+  <xacro:wheel_assembly prefix="fr" x_pos="${wheel_offset_x}"  y_pos="-${wheel_offset_y}" />
+  <xacro:wheel_assembly prefix="rl" x_pos="-${wheel_offset_x}" y_pos="${wheel_offset_y}" />
+  <xacro:wheel_assembly prefix="rr" x_pos="-${wheel_offset_x}" y_pos="-${wheel_offset_y}" />
+
+  <link name="lidar_link">
+    <inertial>
+      <origin xyz="-3.4211E-49 9.7454E-19 1.1102E-16" rpy="0 0 0" />
+      <mass value="0.3927" />
+      <inertia ixx="0.00032725" ixy="9.7388E-52" ixz="-6.1103E-36"
+               iyy="0.00032725" iyz="-3.3795E-35" izz="0.00049087" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="${mesh_path}/lidar_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="${mesh_path}/lidar_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="lidar_joint" type="fixed">
+    <origin xyz="0 0 0.565" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="lidar_link" />
+  </joint>
+
+  <gazebo reference="lidar_link">
+    <material>Gazebo/Black</material>
+    <sensor type="ray" name="lidar_sensor">
+      <update_rate>60.0</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <min_angle>0</min_angle>
+            <max_angle>6.28318</max_angle>
+            <samples>90</samples> 
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.15</min>
+          <max>8.0</max>
+          <resolution>0.01</resolution>
+        </range>
+      </ray>
+      <plugin name="gazebo_ros_lidar_controller" filename="libgazebo_ros_laser.so">
+        <topicName>scan</topicName>
+        <frameName>/$(arg robot_name)/lidar_link</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/$(arg robot_name)</robotNamespace>
+    </plugin>
+  </gazebo>
+
+</robot>

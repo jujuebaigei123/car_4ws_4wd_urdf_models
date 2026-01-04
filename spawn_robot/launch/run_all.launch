@@ -1,0 +1,61 @@
+<launch>
+	<!-- 创建Gazebo环境 -->
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="paused" value="false"/>
+		<arg name="use_sim_time" value="true"/>
+		<arg name="gui" value="true"/>
+		<arg name="headless" value="false"/>
+		<arg name="debug" value="false"/>
+		<arg name="world_name" value="$(find spawn_robot)/worlds/scenario_1.world" />
+	</include>
+
+<group ns="robot_0">
+	<include file="$(find spawn_robot)/launch/spawn_robot.launch">
+		<arg name="x" value="-12.500"/>
+		<arg name="y" value="3.185"/>
+		<arg name="yaw" value="0.0480"/>
+		<arg name="robot_name" value="robot_0"/>
+	</include>
+		<include file="$(find spawn_robot)/launch/car_control.launch">
+		<arg name="robot_name" value="robot_0"/>
+	</include>
+</group>
+
+<group ns="robot_1">
+	<include file="$(find spawn_robot)/launch/spawn_robot.launch">
+		<arg name="x" value="12.500"/>
+		<arg name="y" value="9.205"/>
+		<arg name="yaw" value="-2.8592"/>
+		<arg name="robot_name" value="robot_1"/>
+	</include>
+		<include file="$(find spawn_robot)/launch/car_control.launch">
+		<arg name="robot_name" value="robot_1"/>
+	</include>
+</group>
+
+<group ns="robot_2">
+	<include file="$(find spawn_robot)/launch/spawn_robot.launch">
+		<arg name="x" value="-2.012"/>
+		<arg name="y" value="-12.500"/>
+		<arg name="yaw" value="1.5246"/>
+		<arg name="robot_name" value="robot_2"/>
+	</include>
+		<include file="$(find spawn_robot)/launch/car_control.launch">
+		<arg name="robot_name" value="robot_2"/>
+	</include>
+</group>
+
+<group ns="robot_3">
+	<include file="$(find spawn_robot)/launch/spawn_robot.launch">
+		<arg name="x" value="9.960"/>
+		<arg name="y" value="12.500"/>
+		<arg name="yaw" value="-1.8398"/>
+		<arg name="robot_name" value="robot_3"/>
+	</include>
+		<include file="$(find spawn_robot)/launch/car_control.launch">
+		<arg name="robot_name" value="robot_3"/>
+	</include>
+</group>
+
+
+</launch>
