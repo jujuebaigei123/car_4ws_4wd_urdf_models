@@ -150,8 +150,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://car_4ws_4wd/meshes/fl_drive_link.STL" />
+        <cylinder radius="0.13" length="0.05"/>
       </geometry>
     </collision>
   </link>
@@ -274,8 +273,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://car_4ws_4wd/meshes/fr_drive_link.STL" />
+        <cylinder radius="0.13" length="0.05"/>
       </geometry>
     </collision>
   </link>
@@ -398,8 +396,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://car_4ws_4wd/meshes/rl_drive_link.STL" />
+        <cylinder radius="0.13" length="0.05"/>
       </geometry>
     </collision>
   </link>
@@ -522,8 +519,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://car_4ws_4wd/meshes/rr_drive_link.STL" />
+        <cylinder radius="0.13" length="0.05"/>
       </geometry>
     </collision>
   </link>
